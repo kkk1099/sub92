@@ -1,0 +1,1763 @@
+<script>
+// must revise later
+
+// global close button ???
+// var closeToggle = document.querySelector(".close-button");
+// closeToggle.addEventListener("click", function() {
+//   document.querySelector(".info-block.info-block-visible").classList.toggle("info-block-visible").setAttribute('aria-hidden', true);
+//   document.querySelector("html").classList.remove("info-block-visible");
+// });
+
+var rwdToggle = document.querySelector(".rwd.info-toggle");
+var uxToggle = document.querySelector(".ux.info-toggle");
+var ixdToggle = document.querySelector(".ixd.info-toggle");
+var logToggle = document.querySelector(".log-info-toggle");
+
+rwdToggle.addEventListener("click", function() {
+  document.querySelector("#rwd").setAttribute('aria-hidden', false);
+  document.querySelector("#rwd").classList.toggle("info-block-visible");
+  document.querySelector("html").classList.remove("info-block-hidden");
+  document.querySelector("html").classList.add("info-block-visible");
+});
+
+uxToggle.addEventListener("click", function() {
+  document.querySelector("#ux").setAttribute('aria-hidden', false);
+  document.querySelector("#ux").classList.toggle("info-block-visible");
+  document.querySelector("html").classList.remove("info-block-hidden");
+  document.querySelector("html").classList.add("info-block-visible");
+});
+
+ixdToggle.addEventListener("click", function() {
+   document.querySelector("#ixd").setAttribute('aria-hidden', false);
+  document.querySelector("#ixd").classList.toggle("info-block-visible");
+  document.querySelector("html").classList.remove("info-block-hidden");
+  document.querySelector("html").classList.add("info-block-visible");
+});
+
+logToggle.addEventListener("click", function() {
+  document.querySelector("#build-log").setAttribute('aria-hidden', false);
+  document.querySelector("#build-log").classList.toggle("info-block-visible");
+  document.querySelector("html").classList.remove("info-block-hidden");
+  document.querySelector("html").classList.add("info-block-visible");
+});
+
+var closeRWDBlock = document.querySelector("#rwd .close-button");
+closeRWDBlock.addEventListener("click", function() {
+  document.querySelector("#rwd.info-block-visible").setAttribute('aria-hidden', true);
+  document.querySelector("#rwd.info-block-visible").classList.toggle("info-block-visible");
+  document.querySelector("html").classList.remove("info-block-visible");
+  document.querySelector("html").classList.add("info-block-hidden");
+});
+
+var closeUXBlock = document.querySelector("#ux .close-button");
+closeUXBlock.addEventListener("click", function() {
+  document.querySelector("#ux.info-block-visible").setAttribute('aria-hidden', true);
+  document.querySelector("#ux.info-block-visible").classList.toggle("info-block-visible");
+  document.querySelector("html").classList.remove("info-block-visible");
+  document.querySelector("html").classList.add("info-block-hidden");
+});
+
+var closeLogBlock = document.querySelector("#build-log .close-button");
+closeLogBlock.addEventListener("click", function() {
+  document.querySelector("#build-log.info-block-visible").setAttribute('aria-hidden', true);
+  document.querySelector("#build-log.info-block-visible").classList.toggle("info-block-visible");
+  document.querySelector("html").classList.remove("info-block-visible");
+  document.querySelector("html").classList.add("info-block-hidden");
+});
+</script>
+<style>
+@charset "UTF-8";
+@-webkit-keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@-webkit-keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+[data-tooltip] {
+  position: relative;
+}
+[data-tooltip]:hover, [data-tooltip]:focus {
+  cursor: help;
+}
+[data-tooltip]:hover:after, [data-tooltip]:focus:after {
+  background: #ccebff;
+  box-shadow: 0 0 0 0.25em #99d8ff, 7px 7px 0 rgba(0, 0, 0, 0.5);
+  color: #333;
+  padding: .5em .5em;
+  position: absolute;
+  top: 0;
+  left: 1.5rem;
+  line-height: 1;
+  font-size: .875rem;
+  text-align: center;
+  -webkit-animation: fade-in .4s linear forwards;
+          animation: fade-in .4s linear forwards;
+  transition: opacity .4s ease;
+  z-index: 10000;
+  content: attr(data-tooltip);
+}
+@media (min-width: 30em) {
+  [data-tooltip]:hover:after, [data-tooltip]:focus:after {
+    min-width: 8em;
+  }
+}
+
+.skip-link {
+  background: var(--action);
+  color: var(--light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  line-height: 1;
+  max-height: 0;
+  outline: none;
+  overflow: hidden;
+  position: -webkit-sticky;
+  position: sticky;
+  text-align: center;
+  transition: .35s ease;
+  width: 100%;
+  z-index: 1001;
+}
+.skip-link:focus {
+  box-shadow: none;
+  color: #FFF;
+  max-height: 6.25em;
+  padding-top: .5em;
+  padding-bottom: .5em;
+}
+
+.no-support {
+  background: tomato;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  grid-row: 1 / 1;
+  width: 100%;
+  z-index: 1;
+}
+.no-support .close-button {
+  background: rgba(0, 0, 0, 0.2);
+  color: #FFF;
+  font-size: 1rem;
+  text-decoration: none;
+}
+
+@supports (display: grid) {
+  .no-support {
+    display: none;
+  }
+  .no-support > * {
+    padding: 1rem;
+  }
+
+  #body:target .no-support {
+    display: none;
+  }
+}
+.has-tooltip {
+  position: relative;
+}
+.has-tooltip:hover .tooltip, .has-tooltip:focus .tooltip,
+.has-tooltip a:focus .tooltip, .has-tooltip:hover .icon-tooltip, .has-tooltip:focus .icon-tooltip,
+.has-tooltip a:focus .icon-tooltip {
+  opacity: 1;
+  visibility: visible;
+  -webkit-transform: translateY(0);
+          transform: translateY(0);
+}
+
+.tooltip,
+.icon-tooltip {
+  background-color: hotpink;
+  color: #FFF;
+  font-size: 1.25rem;
+  line-height: 1.2;
+  margin-bottom: .875rem;
+  opacity: 0;
+  padding: .5rem 1rem .65rem;
+  position: absolute;
+  bottom: 100%;
+  left: -100%;
+  left: -50%;
+  right: -50%;
+  visibility: hidden;
+  text-align: center;
+  -webkit-transform: translateY(10px);
+          transform: translateY(10px);
+  transition: all .25s ease-out;
+  border-radius: .2rem;
+  z-index: 50;
+}
+.tooltip::before,
+.icon-tooltip::before {
+  content: "";
+  display: inline-block;
+  position: absolute;
+  border: 8px solid transparent;
+  border-top-color: hotpink;
+  bottom: -16px;
+  left: calc(50% - 8px);
+}
+.tooltip.flush-r,
+.icon-tooltip.flush-r {
+  right: -.5rem;
+  left: auto;
+}
+.tooltip.flush-r::before,
+.icon-tooltip.flush-r::before {
+  right: .75rem;
+  left: auto;
+}
+.tooltip.flush-l,
+.icon-tooltip.flush-l {
+  left: -.5rem;
+}
+.tooltip.flush-l::before,
+.icon-tooltip.flush-l::before {
+  left: .65rem;
+}
+
+.icon-tooltip {
+  left: calc(50% - 2.5rem);
+  padding-right: .25rem;
+  padding-left: .25rem;
+  text-align: center;
+  white-space: pre;
+  width: 5rem;
+}
+.icon-tooltip::before {
+  bottom: -14px;
+}
+
+.clearfix:before, .clearfix:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.full-screen {
+  min-height: 100vh;
+}
+.full-screen .banner {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+.list-unstyled {
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+.list-unstyled ul {
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  margin-bottom: 0;
+  padding-top: 1em;
+  padding-bottom: 1em;
+}
+.list-unstyled ul li:last-child {
+  margin-bottom: 0;
+}
+
+.list-clean li {
+  list-style-type: none;
+}
+
+.list-nested {
+  padding-top: 1em;
+  padding-bottom: 1em;
+  padding-left: 3em;
+  width: 100%;
+}
+.list-nested > li {
+  list-style-type: circle;
+}
+
+.arrow-list-lg {
+  padding: 0;
+}
+.arrow-list-lg > li {
+  display: flex;
+}
+.arrow-list-lg > li li {
+  list-style-type: none;
+}
+.arrow-list-lg > li:before {
+  content: "→ ";
+  padding-right: .625em;
+}
+
+.list-parent {
+  flex-wrap: wrap;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+.grid > * {
+  flex-grow: 1;
+  padding: 1em;
+  flex-basis: 15em;
+}
+@supports (grid-gap: 0) {
+  .grid {
+    display: grid;
+    grid-gap: 2em;
+  }
+  .grid > * {
+    padding: 0;
+  }
+  @media (min-width: 40em) {
+    .grid {
+      grid-template-columns: repeat(auto-fit, minmax(10.5em, 1fr));
+    }
+  }
+}
+
+.grid-2-col {
+  display: flex;
+  flex-wrap: wrap;
+}
+.grid-2-col > * {
+  flex-grow: 1;
+  padding: 1em;
+  flex-basis: 15em;
+}
+@supports (grid-gap: 0) {
+  .grid-2-col {
+    display: grid;
+    grid-gap: 2em;
+  }
+  .grid-2-col > * {
+    padding: 0;
+  }
+  @media (min-width: 40em) {
+    .grid-2-col {
+      grid-template-columns: repeat(auto-fit, minmax(10.5em, 1fr));
+    }
+  }
+}
+@supports (grid-gap: 0) {
+  @media (min-width: 40em) {
+    .grid-2-col {
+      grid-gap: 2em 3em;
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+
+.grid-4-col {
+  display: flex;
+  flex-wrap: wrap;
+}
+.grid-4-col > * {
+  flex-grow: 1;
+  padding: 1em;
+  flex-basis: 15em;
+}
+@supports (grid-gap: 0) {
+  .grid-4-col {
+    display: grid;
+    grid-gap: 2em;
+  }
+  .grid-4-col > * {
+    padding: 0;
+  }
+  @media (min-width: 40em) {
+    .grid-4-col {
+      grid-template-columns: repeat(auto-fit, minmax(10.5em, 1fr));
+    }
+  }
+}
+@supports (grid-gap: 0) {
+  .grid-4-col {
+    grid-template-columns: repeat(auto-fit, minmax(16.5em, 1fr));
+    grid-gap: 2em;
+  }
+  @media (min-width: 60em) and (max-width: 85em) {
+    .grid-4-col {
+      grid-template-columns: repeat(auto-fit, minmax(25em, 1fr));
+    }
+  }
+}
+
+.grid-lg {
+  display: flex;
+  flex-wrap: wrap;
+}
+.grid-lg > * {
+  flex-grow: 1;
+  padding: 1em;
+  flex-basis: 15em;
+}
+@supports (grid-gap: 0) {
+  .grid-lg {
+    display: grid;
+    grid-gap: 2em;
+  }
+  .grid-lg > * {
+    padding: 0;
+  }
+  @media (min-width: 40em) {
+    .grid-lg {
+      grid-template-columns: repeat(auto-fit, minmax(10.5em, 1fr));
+    }
+  }
+}
+@supports (grid-gap: 0) {
+  @media (min-width: 40em) {
+    .grid-lg {
+      grid-gap: 2em 3em;
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+@media (min-width: 40em) {
+  .grid-lg {
+    grid-gap: 5em 0;
+    grid-template-columns: 1fr;
+  }
+}
+@media (min-width: 48em) {
+  .grid-lg {
+    grid-gap: 0 5em;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 56.25em) {
+  .grid-banner > .container {
+    padding: 2em;
+  }
+}
+@media (min-width: 56.25em) {
+  .grid-banner .grid-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    grid-template-rows: minmax(50vh, 1fr);
+  }
+  .grid-banner .grid-wrap > * {
+    flex-grow: 1;
+    padding: 1em;
+    flex-basis: 15em;
+  }
+  @supports (grid-gap: 0) {
+    .grid-banner .grid-wrap {
+      display: grid;
+      grid-gap: 2em;
+    }
+    .grid-banner .grid-wrap > * {
+      padding: 0;
+    }
+    @media (min-width: 40em) {
+      .grid-banner .grid-wrap {
+        grid-template-columns: repeat(auto-fit, minmax(10.5em, 1fr));
+      }
+    }
+  }
+  .grid-banner .grid-wrap > * {
+    display: flex;
+  }
+}
+
+@supports (grid-gap: 0) {
+  .grid-flush {
+    grid-gap: 0 !important;
+  }
+}
+
+.circle-mask {
+  border-radius: 50%;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  max-height: 20rem;
+  max-width: 20rem;
+}
+.circle-mask figcaption {
+  display: none;
+}
+.circle-mask.mask-outside {
+  shape-outside: circle();
+}
+@media (min-width: 56.25em) {
+  .circle-mask {
+    max-height: 25rem;
+    max-width: 25rem;
+  }
+}
+
+@media (min-width: 40em) {
+  .circle-mask-md {
+    border-radius: 50%;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    max-height: 20rem;
+    max-width: 20rem;
+    max-height: 20rem;
+    max-width: 20rem;
+  }
+  .circle-mask-md figcaption {
+    display: none;
+  }
+  .circle-mask-md.mask-outside {
+    shape-outside: circle();
+  }
+}
+@media (min-width: 40em) and (min-width: 56.25em) {
+  .circle-mask-md {
+    max-height: 25rem;
+    max-width: 25rem;
+  }
+}
+
+@media (min-width: 40em) {
+  .circle-mask-sm {
+    border-radius: 50%;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    max-height: 20rem;
+    max-width: 20rem;
+    max-height: 10rem;
+    max-width: 10rem;
+  }
+  .circle-mask-sm figcaption {
+    display: none;
+  }
+  .circle-mask-sm.mask-outside {
+    shape-outside: circle();
+  }
+}
+@media (min-width: 40em) and (min-width: 56.25em) {
+  .circle-mask-sm {
+    max-height: 25rem;
+    max-width: 25rem;
+  }
+}
+
+.rounded-mask {
+  border-radius: 1rem;
+  max-width: 100%;
+  overflow: hidden;
+}
+.rounded-mask img {
+  border-radius: 1rem;
+}
+
+html {
+  font-family: sans-serif;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  box-sizing: border-box;
+  overflow-y: scroll;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section,
+summary {
+  display: block;
+}
+
+audio,
+canvas,
+progress,
+video {
+  display: inline-block;
+  vertical-align: baseline;
+}
+
+audio,
+canvas,
+progress,
+video,
+figure {
+  line-height: 0;
+}
+
+audio:not([controls]) {
+  display: none;
+  height: 0;
+}
+
+[hidden],
+template {
+  display: none;
+}
+
+a {
+  background-color: transparent;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+a:active,
+a:hover {
+  outline: 0;
+}
+
+abbr[title] {
+  border-bottom: none;
+  /* 1 */
+  text-decoration: underline;
+  /* 2 */
+  -webkit-text-decoration: underline dotted;
+          text-decoration: underline dotted;
+  /* 2 */
+}
+
+b,
+strong {
+  font-weight: inherit;
+  /* 1 */
+}
+
+b,
+strong {
+  font-weight: bolder;
+  /* 2 */
+}
+
+dfn {
+  font-style: italic;
+}
+
+h1 {
+  margin-top: 0;
+  margin-right: 0;
+  margin-bottom: 0.67em;
+  margin-left: 0;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+}
+
+mark {
+  background: #ff0;
+  color: #000;
+}
+
+small {
+  font-size: 80%;
+}
+
+sub,
+sup {
+  font-size: 75%;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+sup {
+  top: -0.5em;
+}
+
+sub {
+  bottom: -0.25em;
+}
+
+img {
+  border: 0;
+  max-width: 100%;
+}
+
+svg:not(:root) {
+  overflow: hidden;
+}
+
+figure {
+  margin: 0 auto 1em;
+}
+
+hr {
+  box-sizing: content-box;
+  /* 1 */
+  height: 0;
+  /* 1 */
+  overflow: visible;
+  /* 2 */
+}
+
+pre {
+  overflow: auto;
+}
+
+/**
+ * 1. Correct inheritance and scaling of font-size for preformatted text.
+ * 2. Address odd `em`-unit font size rendering in all browsers.
+ */
+code,
+kbd,
+pre,
+samp {
+  font-family: monospace, monospace;
+  /* 1 */
+  font-size: 1em;
+  /* 2 */
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+}
+
+button,
+input {
+  border: none;
+  outline: 0;
+}
+
+:focus {
+  outline: -moz-focus-ring-color auto 5px;
+  outline: -webkit-focus-ring-color auto 5px;
+}
+
+button {
+  overflow: visible;
+}
+
+button,
+select {
+  text-transform: none;
+}
+
+html input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+  -webkit-appearance: button;
+  cursor: pointer;
+}
+
+button[disabled],
+html input[disabled] {
+  cursor: default;
+}
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+  border: 0;
+  padding: 0;
+}
+
+/**
+ * Restore focus style in Firefox 4+ (unset by a rule above)
+ */
+button:-moz-focusring,
+input:-moz-focusring {
+  outline: 1px dotted ButtonText;
+}
+
+input:not(button, .btn) {
+  line-height: normal;
+}
+
+input[type="text"],
+input[type="search"],
+input[type="password"],
+input[type="email"],
+input[type="tel"],
+textarea {
+  color: inherit;
+  -webkit-box-shadow: none;
+  -webkit-appearance: none !important;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  box-sizing: border-box;
+  padding: 0;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  height: auto;
+}
+
+input[type="text"],
+input[type="search"] {
+  -webkit-border-radius: 0;
+  -webkit-appearance: textfield;
+}
+
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+
+fieldset {
+  border: 1px solid #c0c0c0;
+  margin: 0 2px;
+  padding: 0.35em 0.625em 0.75em;
+}
+
+legend {
+  border: 0;
+  padding: 0;
+}
+
+textarea {
+  overflow: auto;
+}
+
+optgroup {
+  font-weight: bold;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+td,
+th {
+  padding: 0;
+}
+
+address {
+  font-style: normal;
+  word-wrap: break-word;
+}
+
+dl,
+ol,
+ul {
+  margin-top: 0;
+  padding-left: 2em;
+}
+
+nav ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+ol {
+  list-style-type: decimal;
+}
+
+p {
+  margin-top: 0;
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.sr-only-focusable:active, .sr-only-focusable:focus {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+}
+
+:root {
+  font-size: calc( 1rem + (40 - 20) * ( (100vw - 400px) / ( 2000 - 400)));
+}
+:root.info-block-visible {
+  overflow-y: hidden;
+}
+
+body {
+  background-color: #4f3669;
+  background-size: cover;
+  font-family: "Work Sans", "Helvetica Neue", Helvetica, sans-serif;
+  color: #fff;
+  line-height: 1.45;
+  padding: 2em calc(1em + 5vw);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.2;
+  transition: opacity .2s;
+}
+h1:empty,
+h2:empty,
+h3:empty,
+h4:empty,
+h5:empty,
+h6:empty {
+  display: none;
+}
+
+h1, .h1,
+h2, .h2,
+h3, .h3,
+h4, .h4,
+h5, .h5,
+h6, .h6 {
+  font-weight: 700;
+  letter-spacing: .02em;
+  -webkit-font-smoothing: antialiased;
+}
+h1:focus, .h1:focus,
+h2:focus, .h2:focus,
+h3:focus, .h3:focus,
+h4:focus, .h4:focus,
+h5:focus, .h5:focus,
+h6:focus, .h6:focus {
+  outline: none;
+}
+
+h1, .h1 {
+  font-size: 3rem;
+}
+
+h2, .h2 {
+  font-size: 1.45rem;
+}
+
+.text-lg {
+  font-size: 1.75rem;
+}
+
+p {
+  font-size: .875rem;
+  font-weight: 300;
+  line-height: 1.6333;
+}
+
+a {
+  color: #fff;
+  text-decoration: none;
+}
+
+abbr[title] {
+  text-decoration: none;
+}
+
+.btn-reset {
+  background-color: transparent;
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+.media.iframe {
+  margin-bottom: 2rem;
+  position: relative;
+  line-height: 0;
+  height: 0;
+  padding-bottom: 56.25%;
+  width: 100%;
+}
+.media.iframe > figure, .media.iframe > div, .media.iframe > iframe {
+  display: inline-block;
+  position: absolute !important;
+  margin: 0;
+  height: 100% !important;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+.site-wrap {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  margin-right: auto;
+  margin-left: auto;
+  max-width: 37.50em;
+  position: relative;
+  z-index: 3;
+}
+
+header, section, article {
+  margin-bottom: 2rem;
+}
+
+.bg-top-path {
+  display: none;
+  background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/bg-top-path.svg") no-repeat left -1em rgba(0, 0, 0, 0.5);
+  background-blend-mode: overlay;
+  background-size: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 110%;
+  opacity: .8;
+  z-index: 2;
+}
+
+.bg-mid-path {
+  background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/bg-mid-path.svg") no-repeat -2em top;
+  background-blend-mode: overlay;
+  background-size: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 200px;
+  width: 120%;
+  z-index: 2;
+}
+@media (min-width: 37.5em) {
+  .bg-mid-path {
+    height: 100%;
+    top: 65%;
+  }
+}
+
+.bg-img {
+  background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/Wazze-and-18-SM.jpg") no-repeat center top fixed rgba(102, 51, 153, 0.7);
+  background-blend-mode: multiply;
+  background-size: cover;
+  display: block;
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+
+.site-logo {
+  opacity: .9;
+  max-width: 3rem;
+  width: 100%;
+}
+
+.main-nav {
+  margin-bottom: 3em;
+}
+.main-nav a {
+  font-size: 1.125rem;
+  font-weight: 300;
+  letter-spacing: .075rem;
+  text-decoration: none;
+}
+.main-nav ul {
+  margin-bottom: 0;
+}
+.main-nav li {
+  margin-bottom: .25em;
+}
+.main-nav li:last-child {
+  margin-bottom: 0;
+}
+.main-nav li:first-child {
+  margin-right: auto;
+  margin-left: 0;
+  padding-bottom: .625em;
+}
+@media (min-width: 30em) {
+  .main-nav ul {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .main-nav li {
+    margin-bottom: 0;
+    margin-left: 3vw;
+  }
+  .main-nav li:first-child {
+    padding-bottom: 0;
+  }
+}
+
+.intro h1 {
+  margin-bottom: .75rem;
+}
+.intro h2 {
+  line-height: 1.3;
+}
+.intro .media {
+  display: none;
+  border-radius: 0 50%;
+  margin-bottom: 1em;
+  max-width: 14em;
+}
+@media (min-width: 25em) {
+  .intro .media {
+    float: right;
+    margin: 2% 0 1.5em 1.25em;
+    max-width: 300px;
+    width: 30%;
+    shape-outside: polygon(5% -4%, 5% 50%, 9% 66%, 11% 71%, 17% 80%, 31% 88%, 57% 90%, 73% 90%, 87% 90%, 107% 90%, 107% 32%, 102% 19%, 91% 6%, 71% -4%);
+  }
+}
+
+.info-block {
+  opacity: 0;
+  background-color: rgba(102, 51, 153, 0.9);
+  padding-top: 2em;
+  padding-right: 1em;
+  padding-bottom: 2em;
+  padding-left: 2em;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  transition: all .5s ease;
+  z-index: 0;
+}
+.info-block .title {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  font-size: 2rem;
+  margin-bottom: .5em;
+  padding-right: 1em;
+  padding-bottom: .25em;
+}
+.info-block p {
+  margin-bottom: 2em;
+}
+.info-block.info-block-visible {
+  opacity: 1;
+  z-index: 100;
+}
+
+.scroll-wrap {
+  height: calc(100% - 3.75em);
+  overflow-y: auto;
+  padding-top: .25em;
+  padding-right: 1em;
+  padding-bottom: .875em;
+}
+.scroll-wrap::-webkit-scrollbar {
+  width: 8px;
+}
+.scroll-wrap::-webkit-scrollbar-track {
+  background: rgba(51, 51, 51, 0.15);
+}
+.scroll-wrap::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.35);
+}
+
+.close-button {
+  background-color: transparent;
+  border-radius: 50%;
+  font-size: .75rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: .05em;
+  height: 2em;
+  width: 2em;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  top: 1em;
+  right: .75em;
+  text-transform: uppercase;
+  z-index: 1000;
+}
+.close-button svg {
+  display: block;
+  fill: rgba(255, 255, 255, 0.85);
+  height: 100%;
+  width: 100%;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -.313em;
+  margin-left: -.313em;
+}
+.grid > * {
+  flex-grow: 1;
+  float: left;
+  margin: .313em;
+  width: 100%;
+}
+@media (min-width: 20em) {
+  .grid > * {
+    width: 45%;
+  }
+}
+@media (min-width: 37.5em) {
+  .grid > * {
+    width: 30%;
+  }
+  .grid.grid-4-wide > * {
+    width: 20%;
+  }
+}
+
+.passion-block p, .passion-block button {
+  background: rgba(56, 158, 222, 0.85);
+  padding: 1rem;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: .02em;
+  text-shadow: 0 0 0.25em #1c4f6f;
+  text-transform: uppercase;
+}
+.passion-block p span, .passion-block button span {
+  text-transform: none;
+}
+
+.contact-block h2 {
+  margin-bottom: 1rem;
+}
+.contact-block .media {
+  border-radius: 50%;
+  max-width: 10em;
+  width: 100%;
+}
+@media (min-width: 37.5em) {
+  .contact-block article {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .contact-block .media {
+    margin-left: 2em;
+  }
+}
+
+.contact-link {
+  display: inline-block;
+}
+.contact-link:first-child {
+  margin-right: 1rem;
+}
+
+.contact-icons {
+  align-items: center;
+  text-align: center;
+  justify-content: space-between;
+}
+.contact-icons > * {
+  max-height: 2.5em;
+  max-width: 2.5em;
+  width: 100%;
+}
+.contact-icons svg {
+  fill: #fff;
+  height: 2.5em;
+  width: 100%;
+}
+
+.contact-form {
+  color: #333;
+  font-size: .875rem;
+}
+.contact-form label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+.contact-form input, .contact-form textarea {
+  border-radius: .125em;
+  border: none;
+}
+.contact-form input:not([type="submit"]),
+.contact-form textarea,
+.contact-form select {
+  padding-top: .75em;
+  padding-right: .75em;
+  padding-bottom: .75em;
+  padding-left: .75em;
+}
+.contact-form textarea {
+  min-height: 100px;
+}
+@media (max-width: 37.5em) {
+  .contact-form textarea {
+    min-height: 130px;
+    width: 100%;
+  }
+}
+
+.custom-select {
+  background: #FFF;
+  color: #333;
+  border-radius: .125em;
+  line-height: 1.4;
+  position: relative;
+  display: block;
+}
+.custom-select select {
+  border-radius: .125em;
+  color: #a8a8a8;
+  padding-right: 2em;
+  background: none;
+  border: 0 solid transparent;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  width: 100%;
+  margin: 0;
+  outline: none;
+}
+.custom-select select::selected {
+  color: #333;
+}
+.custom-select:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 1em;
+  z-index: 2;
+  pointer-events: none;
+  display: none;
+  display: block;
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 7px solid #666;
+  margin-top: -3px;
+}
+
+.submit-button {
+  background-color: #389EDE;
+  font-weight: 700;
+  color: #fff;
+  padding-top: 1.5em;
+  padding-bottom: 1.5em;
+  text-transform: uppercase;
+}
+
+footer {
+  padding-bottom: 2em;
+}
+footer p, footer button {
+  font-size: .75rem;
+}
+footer p {
+  margin-bottom: .5em;
+}
+footer p:last-child {
+  margin-bottom: 0;
+}
+
+.redesign-video {
+  margin-bottom: 0;
+}
+
+.build-log {
+  background-color: rgba(0, 0, 0, 0.9);
+}
+.build-log pre {
+  color: #8c66b3;
+  display: inline;
+  margin: 0;
+  padding: 0 .2em;
+}
+.build-log a {
+  text-decoration: underline;
+}
+
+.log-entry {
+  margin-bottom: 2em;
+}
+.log-entry:last-child {
+  margin-bottom: 0;
+}
+
+.log-title {
+  font-size: 80%;
+}
+.log-title > * {
+  padding: .313em .5em;
+}
+
+.date-stamp {
+  background-color: #639;
+}
+
+.version-label {
+  background-color: #52297a;
+}
+
+.log-notes {
+  font-size: .875rem;
+  margin-bottom: 0;
+  padding-left: 2.125em;
+}
+.log-notes li {
+  line-height: 1.5;
+  list-style-type: none;
+  margin-bottom: .75em;
+  position: relative;
+}
+.log-notes li:last-child {
+  margin-bottom: 0;
+}
+.log-notes li:before {
+  color: #CCC;
+  content: "✦";
+  font-size: .75em;
+  position: absolute;
+  top: 5px;
+  left: -1rem;
+  width: 1em;
+}
+
+.log-info-toggle {
+  text-decoration: underline;
+}
+
+</style>
+<body>
+  <!-- Behance icon -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <defs>
+      <symbol viewBox="72 2821.442 102.007 67.037" id="icon-behance"> 
+        <path d="M211.07,4292.1s9.574-.64,9.574-12.446-7.979-17.553-17.872-17.553H169.9v66.063h32.872s20.106.639,20.106-19.467C222.878,4308.376,223.835,4292.1,211.07,4292.1Zm-26.808-18.51h18.51s4.468,0,4.468,7.022-2.553,7.979-5.745,7.979H184.261Zm17.553,42.765H184.261V4298.8h18.51s6.7,0,6.7,8.935C209.474,4315.4,204.367,4316.035,201.814,4316.354Zm47.871-37.66c-24.255,0-24.255,25.211-24.255,25.211s-1.6,25.213,24.255,25.213c0,0,21.7,1.276,21.7-17.553h-11.17s.319,7.022-10.213,7.022c0,0-11.17.638-11.17-11.489h32.872c0,.319,3.83-28.4-22.021-28.4Zm9.893,19.787H238.835s1.277-10.213,11.17-10.213S259.579,4298.481,259.579,4298.481Zm2.553-32.553h-26.17v8.3h26.17Z" transform="translate(-97.9 -1440.658)"></path>
+      </symbol>
+    </defs>
+  </svg>
+  <!-- GitHub icon -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <defs>
+      <symbol viewBox="373 2815.059 93.828 79.788" id="icon-github">
+        <path d="M498.39,4834.7c-3.511,0-6.7,4.149-6.7,9.254s2.872,9.256,6.7,9.256c3.511,0,6.7-4.149,6.7-9.256C504.773,4838.845,501.9,4834.7,498.39,4834.7Zm22.978-23.937c.638-1.914.638-12.445-3.191-22.659,0,0-9.255.958-23.3,10.531-2.872-.956-7.979-1.275-12.766-1.275-5.106,0-9.893.319-12.766,1.275-14.042-9.573-23.3-10.531-23.3-10.531-4.149,10.214-3.83,20.745-3.192,22.659-4.787,5.107-7.659,11.17-7.659,19.788,0,36.7,30.319,37.341,37.978,37.341H491.05c7.659,0,37.978-.638,37.978-37.341A27.724,27.724,0,0,0,521.368,4810.759Zm-39.255,52.659h0c-19.468,0-34.467-2.233-34.467-21.062a15.846,15.846,0,0,1,5.425-12.128c6.383-5.744,16.915-2.872,29.042-2.872h0c12.127,0,22.659-3.191,29.042,2.872a15.849,15.849,0,0,1,5.425,12.128c0,18.829-15,21.063-34.467,21.063ZM465.838,4834.7c-3.511,0-6.7,4.149-6.7,9.254s2.872,9.256,6.7,9.256c3.511,0,6.7-4.149,6.7-9.256S469.348,4834.7,465.838,4834.7Z" transform="translate(-62.2 -1973.041)"></path>
+      </symbol>
+    </defs>
+  </svg>
+  <!-- CodePen icon -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <defs>
+      <symbol viewBox="665 2808.531 92.921 92.918" id="icon-codepen">
+        <path d="M91.54,31.428,48.177,2.52a3.1,3.1,0,0,0-3.435,0L1.379,31.428A3.1,3.1,0,0,0,0,34.005V62.913A3.1,3.1,0,0,0,1.379,65.49L44.742,94.4a3.1,3.1,0,0,0,3.438,0L91.544,65.49a3.1,3.1,0,0,0,1.378-2.577V34.005a3.1,3.1,0,0,0-1.378-2.577ZM46.458,59.193,30.361,48.46l16.1-10.732,16.1,10.732Zm3.1-26.845V10.883L84.237,34.005,68.14,44.737Zm-6.195,0L24.777,44.737,8.68,34.005,43.361,10.883ZM19.192,48.46l-13,8.666V39.794Zm5.585,3.723L43.361,64.573V86.038L8.68,62.916ZM49.556,64.573,68.14,52.183l16.1,10.732L49.556,86.038ZM73.724,48.46l13-8.666V57.127Z" transform="translate(664.999 2806.531)"></path>
+      </symbol>
+    </defs>
+  </svg>
+  <!-- Twitter icon -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <defs>
+      <symbol viewBox="957 2818.25 93.509 75.958" id="icon-twitter">
+        <path d="M123.673,5071.313v2.553c0,25.531-19.468,54.894-54.893,54.894a55.661,55.661,0,0,1-29.68-8.617,22.629,22.629,0,0,0,4.468.319,39.536,39.536,0,0,0,23.936-8.3c-8.3-.319-15.638-5.744-17.872-13.4a13.1,13.1,0,0,0,3.511.319,24.791,24.791,0,0,0,5.106-.638,19.153,19.153,0,0,1-15.319-18.83v-.319a19.384,19.384,0,0,0,8.617,2.553,19.131,19.131,0,0,1-6.064-25.531,53.623,53.623,0,0,0,39.893,20.1,18.824,18.824,0,0,1-.638-4.467,19.192,19.192,0,0,1,33.191-13.085,37.082,37.082,0,0,0,12.127-4.788,18.835,18.835,0,0,1-8.617,10.531,44.288,44.288,0,0,0,11.17-2.872,28.184,28.184,0,0,1-8.936,9.577Z" transform="translate(917.9 -2234.551)"></path>
+      </symbol>
+    </defs>
+  </svg>
+  <!-- Dribble icon -->
+  <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+    <defs>
+      <symbol viewBox="1249 2808.676 93.828 93.828" id="icon-dribble">
+        <path d="M1007.88,4687.733a196.511,196.511,0,0,0-15-22.98,40.29,40.29,0,0,0-22.021,28.085C971.817,4692.519,988.732,4692.838,1007.88,4687.733Zm5.106,13.4c.638-.32.957-.32,1.6-.639-.957-2.234-2.234-4.467-3.191-6.7a154.282,154.282,0,0,1-41.169,5.744v1.275a39.945,39.945,0,0,0,10.213,26.808h0c-.319,0,10.851-19.466,32.553-26.487Zm-27.446,31.276h0c-.319-.319-.638-.319-.957-.639A4.589,4.589,0,0,0,985.54,4732.413Zm15-70.532Zm36.063,8.939a40.456,40.456,0,0,0-26.489-9.895,32.991,32.991,0,0,0-9.574,1.275,200.539,200.539,0,0,1,15,23.3c15.319-5.744,21.063-14.678,21.063-14.678Zm-26.489,76.911a46.914,46.914,0,1,1,46.914-46.915A46.99,46.99,0,0,1,1010.114,4747.73Zm6.7-40.21c-23.617,8.3-31.276,24.575-31.6,24.893a39,39,0,0,0,24.574,8.617,42.751,42.751,0,0,0,15.638-3.191c-.319-3.512-2.553-15.958-8.617-30.318C1017.135,4707.2,1017.135,4707.521,1016.816,4707.521Zm1.915-16.276a45.263,45.263,0,0,1,2.553,5.743l.957,1.916c13.723-1.6,27.446,1.275,28.084,1.275a39.5,39.5,0,0,0-9.255-25.212c0,.638-6.7,9.895-22.34,16.277Zm6.064,14.361a167.582,167.582,0,0,1,7.659,28.722,40.678,40.678,0,0,0,17.234-26.807c-.958-.639-12.128-4.151-24.893-1.916Z" transform="translate(285.8 -1845.226)"></path>
+      </symbol>
+    </defs>
+  </svg>
+  <!-- Site Wrap -->
+  <div class="site-wrap">   
+    <header role="header">
+      <nav class="main-nav">
+          <ul>
+            <li><a href="/"><img class="site-logo" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/logo-icon.svg" alt="ethayer.co brand icon"/><span class="sr-only">home</span></a></li>
+            <li><a href="#about-me">about</a></li>
+            <li><a href="#my-work">work</a></li>
+            <li><a href="#lets-connect">contact</a></li>
+          </ul>
+      </nav>
+      <div class="intro"><img class="media" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/profile-pic.jpg" alt="profile picture"/>
+        <h1>Hi, I'm Eric.</h1>
+        <h2>I love building web sites, design systems, responsive display patterns and productive relationships.</h2>
+        <p>I’m located outside of Denver Colorado. Give me a call or send me an email to talk about your next project or idea. I love working in all phases of the design process so I’m able to help out in multiple ways.      </p>
+      </div>
+    </header>
+    <!-- Main -->
+    <main role="main">
+      <!-- My Passions-->
+      <section class="passion-block">
+        <h2 id="about-me">my passions</h2>
+        <div class="grid grid-4-wide">
+          <button class="rwd info-toggle"><abbr title="responsive web design">RWD</abbr>   </button>
+          <button class="ux info-toggle"><abbr title="user experience design">UX</abbr></button>
+          <button class="ixd info-toggle"><abbr title="interaction design">I<span>x</span>D</abbr></button>
+          <button class="perf info-toggle"><abbr title="web performance">Perf</abbr></button>
+          <button class="ui info-toggle"><abbr title="user interface design">UI</abbr></button>
+          <button class="proto info-toggle"><abbr title="prototyping">Proto</abbr></button>
+          <button class="brand info-toggle"><abbr title="branding">Brand</abbr></button>
+          <button class="a11y info-toggle"><abbr title="web accessibility">A11Y</abbr>      </button>
+        </div>
+      </section>
+      <!-- Work Samples -->
+      <section class="work-samples">
+        <h2 id="my-work">work samples</h2>
+        <div class="grid">
+          <!-- work sample-->
+          <figure><img srcset="https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-3000px.jpg 2x, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-2500px.jpg 2500w, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-2000px.jpg 2000w, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-1200px.jpg 1200w, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-800px.jpg 800w, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-480px.jpg 480w" alt="work sample"/></figure>
+        </div>
+      </section>
+      <!-- Redesign Video -->
+      <section class="redesign-video">
+        <h2 id="my-process">design process&nbsp;
+          <div class="grid">
+            <figure class="media iframe"><iframe class="lazyload" width="100%" src="https://www.youtube.com/embed/ZqlVjv8DlYI?rel=0" frameborder="0" allowfullscreen>  </iframe> <noscript><iframe width="100%" src="https://www.youtube.com/embed/ZqlVjv8DlYI?rel=0" frameborder="0" allowfullscreen></iframe></noscript></figure>
+          </div>
+        </h2>
+      </section>
+      <!-- Contact Block-->
+      <section class="contact-block">
+        <article>
+          <div class="text">
+            <h2 class="text-lg" id="lets-connect">let's connect</h2>
+            <p>Find me on the web or let’s talk in person. I want to hear about your next big idea, current project or next big idea. I’m always looking to meet new people with good intentions that enjoy the process of creating even more than the profit it brings us.          </p>
+          </div><img class="media" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/profile-pic.jpg" alt="profile picture"/>
+        </article>
+        <div class="contact-links"><a class="contact-link h2" href="mailto:eric@ethayer.co">eric@ethayer.co</a><a class="contact-link h2" href="tel:6199525081">619 952 5081</a></div>
+      </section>
+      <!-- Contact Form-->
+      <section class="contact-form">
+        <form id="contact-form" action="post">
+          <div class="grid form-group">
+            <label class="sr-only" for="name">Name</label>
+            <input id="name" name="contactName" type="text" placeholder="Name" required="required"/>
+            <label class="sr-only" for="email">Email</label>
+            <input id="email" name="contactEmail" type="email" placeholder="Email" required="required"/>
+            <label class="sr-only" for="interest">Interest</label>
+            <div class="custom-select">
+              <select>
+                <option value="interest" selected="selected">Interest</option>
+                <option value="web design">web design</option>
+                <option value="visual design">visual design</option>
+                <option value="user experience design">user experience design</option>
+                <option value="front-end development">front-end development</option>
+                <option value="general">just sayin' hi</option>
+              </select>
+            </div>
+          </div>
+          <div class="grid form-group">   
+            <label class="sr-only" for="contact-message">Message</label>
+            <textarea id="contact-message" name="contactMessage" placeholder="Message" cols="100"></textarea>
+            <input class="submit-button" type="submit" value="send"/>
+          </div>
+        </form>
+      </section>
+      <!-- Contact Icons-->
+      <section class="grid contact-icons"><a href="https://www.behance.net/ethayer"><svg title="behance icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-behance"></use></svg></a><a href="https://github.com/ericthayer/"><svg title="github icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-github"></use></svg></a><a href="https://codepen.io/ericthayer/"><svg title="codepen icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-codepen"></use></svg></a><a href="https://twitter.com/_ericthayer/"><svg title="twitter icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-twitter"></use></svg></a><a href="https://dribbble.com/ethayer/"><svg title="dribble icon"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-dribble"></use></svg></a></section>
+    </main>
+    <!-- Footer -->
+    <footer class="copyrights" role="contentinfo">
+      <p>&copy; 2017 Eric Thayer - Created with <a href="http://www.adobe.com/products/experience-design.html">Adobe XD</a> - Designed with <a href="https://codepen.io/">CodePen</a> - <button class="btn-reset log-info-toggle">v0.2.5</button></p>
+    </footer>
+  </div>
+  <!-- Info Block : RWD-->
+  <div class="info-block" id="rwd" aria-hidden="true">
+    <h3 class="title">Responsive Web Design</h3>
+    <div class="scroll-wrap">     
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt sit placeat illum, vero error tenetur, laudantium possimus nostrum vel soluta excepturi. Nisi blanditiis et, porro.</p>
+      <div class="media iframe"><iframe class="lazyload" width="100%" src="https://www.youtube.com/embed/ElAJbhkH2lU?rel=0" frameborder="0" allowfullscreen>  </iframe> <noscript><iframe width="100%" src="https://www.youtube.com/embed/ElAJbhkH2lU?rel=0" frameborder="0" allowfullscreen></iframe></noscript></div>
+      <div class="media">
+        <figure>
+          <figcaption> </figcaption><img srcset="https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-3000px.jpg 2x, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-2500px.jpg 2500w, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-2000px.jpg 2000w, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-1200px.jpg 1200w, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-800px.jpg 800w, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-480px.jpg 480w" alt="work sample"/>
+        </figure>
+      </div>
+      <p>Iusto eligendi dolorum blanditiis repellendus officiis ea amet aliquid nostrum. Consequatur provident quod, architecto voluptatem harum a autem itaque fugiat modi rem nam quo iure assumenda consectetur quos vero ipsam incidunt quidem ad aliquid cumque quis officiis! Repellat reiciendis saepe aperiam.</p>
+      <!-- image grid-->
+      <div class="grid">
+        <div class="media">
+          <figure>
+            <figcaption> </figcaption><img srcset="https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-3000px.jpg 2x, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-2500px.jpg 2500w, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-2000px.jpg 2000w, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-1200px.jpg 1200w, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-800px.jpg 800w, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-480px.jpg 480w" alt="work sample"/>
+          </figure>
+        </div>
+        <div class="media">
+          <figure>
+            <figcaption> </figcaption><img srcset="https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-3000px.jpg 2x, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-2500px.jpg 2500w, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-2000px.jpg 2000w, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-1200px.jpg 1200w, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-800px.jpg 800w, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-480px.jpg 480w" alt="work sample"/>
+          </figure>
+        </div>
+      </div>
+    </div>
+    <!-- close window-->
+    <button class="close-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 26"><path class="a" d="M699,837a13,13,0,1,1,13-13A13,13,0,0,1,699,837Zm0-23a10,10,0,1,0,10,10A10,10,0,0,0,699,814Zm4.5,13.5-1,1a0.48,0.48,0,0,1-.7,0l-2.9-2.9-2.9,2.9a0.48,0.48,0,0,1-.7,0l-1-1a0.48,0.48,0,0,1,0-.7l2.9-2.9-2.9-2.9a0.48,0.48,0,0,1,0-.7l1-1a0.48,0.48,0,0,1,.7,0l2.9,2.9,2.9-2.9a0.48,0.48,0,0,1,.7,0l1,1a0.48,0.48,0,0,1,0,.7l-2.9,2.9,2.9,2.9A0.48,0.48,0,0,1,703.5,827.5Z" transform="translate(-686 -811)"/></svg> <span class="sr-only">close</span></button>
+  </div>
+  <!-- Info Block : UX-->
+  <div class="info-block" id="ux" aria-hidden="true">
+    <h3 class="title">User Experience Design</h3>
+    <div class="scroll-wrap">     
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt sit placeat illum, vero error tenetur, laudantium possimus nostrum vel soluta excepturi. Nisi blanditiis et, porro.</p>
+      <div class="media iframe"><iframe class="lazyload" width="100%" src="https://www.youtube.com/embed/ElAJbhkH2lU?rel=0" frameborder="0" allowfullscreen>  </iframe> <noscript><iframe width="100%" src="https://www.youtube.com/embed/ElAJbhkH2lU?rel=0" frameborder="0" allowfullscreen></iframe></noscript></div>
+      <div class="media">
+        <figure>
+          <figcaption> </figcaption><img srcset="https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-3000px.jpg 2x, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-2500px.jpg 2500w, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-2000px.jpg 2000w, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-1200px.jpg 1200w, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-800px.jpg 800w, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-480px.jpg 480w" alt="work sample"/>
+        </figure>
+      </div>
+      <p>Iusto eligendi dolorum blanditiis repellendus officiis ea amet aliquid nostrum. Consequatur provident quod, architecto voluptatem harum a autem itaque fugiat modi rem nam quo iure assumenda consectetur quos vero ipsam incidunt quidem ad aliquid cumque quis officiis! Repellat reiciendis saepe aperiam.</p>
+      <!-- image grid-->
+      <div class="grid">
+        <div class="media">
+          <figure>
+            <figcaption> </figcaption><img srcset="https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-3000px.jpg 2x, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-2500px.jpg 2500w, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-2000px.jpg 2000w, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-1200px.jpg 1200w, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-800px.jpg 800w, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-480px.jpg 480w" alt="work sample"/>
+          </figure>
+        </div>
+        <div class="media">
+          <figure>
+            <figcaption> </figcaption><img srcset="https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-3000px.jpg 2x, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-2500px.jpg 2500w, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-2000px.jpg 2000w, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-1200px.jpg 1200w, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-800px.jpg 800w, https://s3-us-west-2.amazonaws.com/s.cdpn.io/97621/img-srcset-480px.jpg 480w" alt="work sample"/>
+          </figure>
+        </div>
+      </div>
+    </div>
+    <!-- close window-->
+    <button class="close-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 26"><path class="a" d="M699,837a13,13,0,1,1,13-13A13,13,0,0,1,699,837Zm0-23a10,10,0,1,0,10,10A10,10,0,0,0,699,814Zm4.5,13.5-1,1a0.48,0.48,0,0,1-.7,0l-2.9-2.9-2.9,2.9a0.48,0.48,0,0,1-.7,0l-1-1a0.48,0.48,0,0,1,0-.7l2.9-2.9-2.9-2.9a0.48,0.48,0,0,1,0-.7l1-1a0.48,0.48,0,0,1,.7,0l2.9,2.9,2.9-2.9a0.48,0.48,0,0,1,.7,0l1,1a0.48,0.48,0,0,1,0,.7l-2.9,2.9,2.9,2.9A0.48,0.48,0,0,1,703.5,827.5Z" transform="translate(-686 -811)"/></svg> <span class="sr-only">close</span></button>
+  </div>
+  <!-- bg mid path-->
+  <div class="bg-top-path"> </div>
+  <!-- bg mid path-->
+  <div class="bg-mid-path"></div>
+  <!-- bg image © Eric Thayer | 18th & Wazee | Denver Colorado -->
+  <div class="bg-img"></div>
+  <!-- build log-->
+  <div class="info-block build-log" id="build-log" aria-hidden="true">
+    <h3 class="title">Build Log</h3>
+    <div class="scroll-wrap">
+      <div class="log-entry">
+        <p class="log-title"><time class="date-stamp" datetime="2017-01-21">01/21/2017</time><span class="version-label"><small>v</small> 0.2.5</span></p>
+        <ul class="log-notes">
+          <li>refactored JS but it's still ugly</li>
+          <li>played w/ <pre><code>svg</code></pre> bg image layout options... again</li>
+          <li>added scrollbar styles and text formatting for <pre><code>.scroll-wrap</code></pre></li>
+        </ul>
+      </div>
+      <div class="log-entry">
+        <p class="log-title"><time class="date-stamp" datetime="2017-01-20">01/20/2017</time><span class="version-label"><small>v</small> 0.2.4</span></p>
+        <ul class="log-notes">
+          <li>tweaking on <pre><code>.intro > .media</code></pre> style/layout</li>
+          <li>small screen layout changes and fixes</li>
+          <li>base typography changes          </li>
+          <li>small screen layout fixes</li>
+          <li>some quick performance/a11y audits (not bad)</li>
+        </ul>
+      </div>
+      <div class="log-entry">
+        <p class="log-title"><time class="date-stamp" datetime="2017-01-19">01/19/17</time><span class="version-label"><small>v</small> 0.2.3</span></p>
+        <ul class="log-notes">
+          <li>added <pre><code>.redesign-video</code></pre> showing time-lapse of static design</li>
+          <li>modified <pre><code>.info-block</code></pre> layout & JS          </li>
+          <li><pre><code>.site-wrap</code></pre> layout style changes</li>
+          <li><pre><code>.intro</code></pre> layout style changes</li>
+          <li>played w/ <pre><code>svg</code></pre> bg images but layout still pending</li>
+        </ul>
+      </div>
+      <div class="log-entry">
+        <p class="log-title"><time class="date-stamp" datetime="2017-01-08">01/08/17</time><span class="version-label"><small>v</small> 0.2.2</span>
+          <ul class="log-notes">
+            <li>added image & new font assets</li>
+            <li>added <pre><code>.bg-img</code></pre> styles</li>
+            <li>started simple modal to use w/ <pre><code>.passion-block</code></pre></li>
+            <li>modified <pre><code>.work-samples</code></pre> layout & grid      </li>
+          </ul>
+        </p>
+      </div>
+      <div class="log-entry">
+        <p class="log-title"><time class="date-stamp" datetime="2017-01-12">01/12/17</time><span class="version-label"><small>v</small> 0.2.1</span></p>
+        <ul class="log-notes">
+          <li>added <pre><code>.main-nav</code></pre> styles</li>
+          <li>added <pre><code>.build-log</code></pre> format</li>
+          <li><pre><code>.build-log</code></pre> styles</li>
+          <li><pre><code>.contact-block</code></pre> & <pre><code>.contact-form</code></pre> created </li>
+          <li>flex grid fix on iOS</li>
+          <li>personal image layout options, using <pre><code>shape-outside</code></pre> CSS property</li>
+        </ul>
+      </div>
+      <div class="log-entry">
+        <p class="log-title"><time class="date-stamp" datetime="2017-01-05">01/05/17</time><span class="version-label"><small>v</small> 0.2.0</span>
+          <ul class="log-notes">
+            <li>inital HTML layout with Pug (header, main, footer)</li>
+            <li>base styles & variables set</li>
+            <li><pre><code>.passion-block</code></pre> & <pre><code>.work-samples</code></pre> created</li>
+            <li>layout options explored     </li>
+          </ul>
+        </p>
+      </div>
+      <div class="log-entry">
+        <p class="log-title"><time class="date-stamp" datetime="2016-10-01">10/01/16</time><span class="version-label"><small>v</small> 0.1.x</span6</p>
+        <ul class="log-notes">
+          <li>see <a href="http://ethayer.co/">http://ethayer.co</a> for a rough v1</li>
+        </ul>
+      </div>
+    </div>
+    <!-- close window-->
+    <button class="close-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 26"><path class="a" d="M699,837a13,13,0,1,1,13-13A13,13,0,0,1,699,837Zm0-23a10,10,0,1,0,10,10A10,10,0,0,0,699,814Zm4.5,13.5-1,1a0.48,0.48,0,0,1-.7,0l-2.9-2.9-2.9,2.9a0.48,0.48,0,0,1-.7,0l-1-1a0.48,0.48,0,0,1,0-.7l2.9-2.9-2.9-2.9a0.48,0.48,0,0,1,0-.7l1-1a0.48,0.48,0,0,1,.7,0l2.9,2.9,2.9-2.9a0.48,0.48,0,0,1,.7,0l1,1a0.48,0.48,0,0,1,0,.7l-2.9,2.9,2.9,2.9A0.48,0.48,0,0,1,703.5,827.5Z" transform="translate(-686 -811)"/></svg> <span class="sr-only">close</span></button>
+  </div>
+</body>
